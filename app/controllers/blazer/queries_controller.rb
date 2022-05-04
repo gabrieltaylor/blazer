@@ -87,7 +87,7 @@ module Blazer
       data_source ||= params[:data_source]
       @data_source = Blazer.data_sources[data_source]
 
-      @statement = Blazer::Statement.new(params[:statement], @data_source)
+      @statement = Blazer::Statement.new(params[:statement] || @query.statement, @data_source)
       # before process_vars
       @cohort_analysis = @statement.cohort_analysis?
 
