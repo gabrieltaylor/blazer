@@ -1,4 +1,7 @@
 Blazer::Engine.routes.draw do
+  # Serve Blazer's bundled assets from the engine (no host asset pipeline required)
+  get "blazer-assets/*path", to: "assets#show", as: :asset_file, format: false
+
   resources :queries do
     post :run, on: :collection # err on the side of caution
     post :cancel, on: :collection
