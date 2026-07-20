@@ -4,14 +4,22 @@
     <title><%= blazer_title ? blazer_title : "Blazer" %></title>
 
     <meta charset="utf-8" />
-    <%= favicon_link_tag "blazer/favicon.png" %>
-    <% if defined?(Propshaft::Railtie) && Rails.application.assets.is_a?(Propshaft::Assembly) %>
-      <%= stylesheet_link_tag "blazer/bootstrap-propshaft", "blazer/bootstrap", "blazer/tom-select", "blazer/github", "blazer/daterangepicker", "blazer/application", nonce: true %>
-      <%= javascript_include_tag "blazer/tablesort", "blazer/tom-select.base", "blazer/highlight.min", "blazer/moment", "blazer/moment-timezone-with-data", "blazer/daterangepicker", "blazer/chart.umd", "blazer/chartjs-adapter-date-fns.bundle", "blazer/chartkick", "blazer/mapkick.bundle", "blazer/ace/ace", "blazer/ace/ext-language_tools", "blazer/ace/theme-twilight", "blazer/ace/mode-sql", "blazer/ace/snippets/text", "blazer/ace/snippets/sql", "blazer/Sortable", "blazer/routes", "blazer/queries", "blazer/fuzzysearch", "blazer/application", nonce: true %>
-    <% else %>
-      <%= stylesheet_link_tag "blazer/application", nonce: true %>
-      <%= javascript_include_tag "blazer/application", nonce: true %>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="<%= blazer.asset_file_path("favicon.png") %>" />
+
+    <% %w[bootstrap-propshaft bootstrap tom-select github daterangepicker application].each do |css| %>
+      <link rel="stylesheet" href="<%= blazer.asset_file_path("#{css}.css") %>" nonce="<%= content_security_policy_nonce %>" />
     <% end %>
+
+    <% %w[
+      tablesort tom-select.base highlight.min moment moment-timezone-with-data
+      daterangepicker chart.umd chartjs-adapter-date-fns.bundle chartkick mapkick.bundle
+      ace/ace ace/ext-language_tools ace/theme-twilight ace/mode-sql
+      ace/snippets/text ace/snippets/sql Sortable routes queries fuzzysearch application
+    ].each do |js| %>
+      <script src="<%= blazer.asset_file_path("#{js}.js") %>" nonce="<%= content_security_policy_nonce %>"></script>
+    <% end %>
+
     <%= javascript_tag nonce: true do %>
       <%= blazer_js_var "rootPath", root_path %>
     <% end %>
